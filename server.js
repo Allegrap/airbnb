@@ -12,8 +12,8 @@ app.get('/airbnb', function(req, res){
     if(!error){
       var $ = cheerio.load(html);
 
-      var name, type, bedrooms;
-      var json = { name : "", type : "", bedrooms : "" };
+      var name, type, bedrooms, bathrooms;
+      var json = { name : "", type : "", bedrooms : "", bathrooms : "" };
 
       $('#listing_name').each(function(){
         var name_data = $(this);
@@ -35,16 +35,20 @@ app.get('/airbnb', function(req, res){
       })
 
       $('.bottom-spacing-2').each(function(){
-        var bedrooms_data = $(this);
+        var rooms_data = $(this);
 
-        var bedrooms = bedrooms_data.eq(0).text();
+        var rooms = rooms_data.eq(0).text();
 
-        if(bedrooms.indexOf("Bedrooms:") > -1) {
-          bedrooms = bedrooms.split(":")[1].trim();
+        if(rooms.indexOf("Bedrooms:") > -1) {
+          bedrooms = rooms.split(":")[1].trim();
           json.bedrooms = bedrooms
         }
+
+        if(rooms.indexOf("Bathrooms:") > -1) {
+          bathrooms = rooms.split(":")[1].trim();
+          json.bathrooms = bathrooms
+        }
       
-        
       })
 
     }else {
