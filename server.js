@@ -12,15 +12,30 @@ app.get('/airbnb', function(req, res){
     if(!error){
       var $ = cheerio.load(html);
 
-      var name;
-      var json = { name : "" };
+      var name, type;
+      var json = { name : "", type : "" };
 
       $('#listing_name').each(function(){
-        var data = $(this);
-        name = data.eq(0).text();
+        var name_data = $(this);
+        name = name_data.eq(0).text();
 
         json.name = name;
       })
+
+      $('.link-reset').each(function(){
+        var type_data = $(this);
+        //console.log(type_data.eq(0).text())
+
+        var type = type_data.eq(0).text();
+
+        if(type.indexOf("Property type:") > -1) {
+          type = type.split(":")[1].trim();
+          json.type = type;
+        }
+        
+      })
+    }else {
+      console.log(error);
     }
 
     fs.writeFile('output.json', JSON.stringify(json, null, 4), function(err){
