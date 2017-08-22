@@ -15,17 +15,17 @@ app.get('/airbnb', function(req, res){
       var name;
       var json = { name : "" };
 
-      $('.listing_name').each(function(){
-          var data = $(this);
-          name = data.text();
+      $('#listing_name').each(function(){
+        var data = $(this);
+        name = data.eq(0).text();
 
-          json.name = name;
+        json.name = name;
       })
     }
 
     fs.writeFile('output.json', JSON.stringify(json, null, 4), function(err){
-              console.log('Success!');
-          })
+      console.log('Success!');
+    })
 
     res.send('Should be done.')
 
