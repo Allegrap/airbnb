@@ -15,7 +15,7 @@ app.get('/airbnb', function(req, res){
       var name;
       var json = { name : "" };
 
-      $('.listing_name').filter(function(){
+      $('.listing_name').each(function(){
           var data = $(this);
           name = data.text();
 
